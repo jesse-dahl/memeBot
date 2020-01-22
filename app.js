@@ -3,8 +3,10 @@ const ejs = require("ejs");
 const parser = require("body-parser");
 const multer = require("multer");
 const path = require('path');
+const Post = require('./models/db');
 var config = require('./config');
 //var imageUwu = require('./imageBrain');
+
 
 // Set Storage Engine
 const storage = multer.diskStorage({
@@ -67,9 +69,18 @@ app.post("/", function (req, res) {
           msg: "Error: No file was selected!"
         });
       } else {
-        res.render('home', {
-          msg: "File Uploaded!",
-          file: `uploads/${req.file.filename}`
+        const post = new Post({
+          image: req.file.path
+        });
+        post.save(function (err) {
+          if (!err) {
+            res.render('home', {
+              msg: "File Uploaded!",
+              file: `uploads/${req.file.filename}`
+            });
+          } else {
+            console.log("There was an error with writing to the database: " + err);
+          }
         });
       }
     }
