@@ -1,0 +1,1 @@
+This is an app that I am creating for my friends and I to upload memes to a database, choose a certain meme from the database, then choose what platform they want to upload the meme to (i.e. Reddit, Twitter, etc.)

@@ -1,0 +1,8 @@
+<%- include("partials/header") -%>
+
+<div>
+  <%= typeof msg != 'undefined' ? msg : '' %>
+  <img src="<%= typeof file != 'undefined' ? file : '' %>" class="img-thumbnail">
+</div>
+
+<%- include("partials/footer") -%>
