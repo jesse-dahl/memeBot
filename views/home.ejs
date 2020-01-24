@@ -2,7 +2,9 @@
 
 <div>
   <%= typeof msg != 'undefined' ? msg : '' %>
-  <img src="<%= typeof file != 'undefined' ? file : '' %>" class="img-thumbnail">
+  <% files.forEach(function(file) { %>
+  <img src="<%= typeof file != 'undefined' ? file.image : '' %>" class="img-thumbnail">
+  <% }); %>
 </div>
 
 <%- include("partials/footer") -%>

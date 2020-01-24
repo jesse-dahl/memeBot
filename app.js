@@ -5,8 +5,8 @@ const multer = require("multer");
 const path = require('path');
 const Post = require('./models/db');
 const Storage = require('./functions/multerStorage');
-var config = require('./functions/twitter/config');
-//var imageUwu = require('./imageBrain');
+
+const imgArr = [];
 
 // Express stuff
 const app = express();
@@ -15,35 +15,41 @@ app.use(parser.urlencoded({ extended: true }));
 app.use(express.static("./public"));
 
 app.get("/", function (req, res) {
-  res.render("home");
+  Post.find({}, function (err, posts) {
+    if (err) {
+      console.log(err);
+    }
+    res.render("home", {
+      msg: "Herro :3",
+      files: posts
+    });
+  });
 });
 
 app.get("/upload", function (req, res) {
   res.render("post");
 });
 
-app.post("/", function (req, res) {
+app.post("/upload", function (req, res) {
 
   Storage(req, res, function (err) {
     if (err) {
-      res.render('home', {
+      res.render('post', {
         msg: "oops there was a wittle fucky wucky :3 : " + err
       });
     } else {
       if (req.file == undefined) {
-        res.render('home', {
+        res.render('post', {
           msg: "Error: No file was selected!"
         });
       } else {
+        const filePath = "uploads/" + req.file.filename;
         const post = new Post({
-          image: req.file.path
+          image: filePath
         });
         post.save(function (err) {
           if (!err) {
-            res.render('home', {
-              msg: "File Uploaded!",
-              file: `uploads/${req.file.filename}`
-            });
+            res.redirect("/");
           } else {
             console.log("There was an error with writing to the database: " + err);
           }
