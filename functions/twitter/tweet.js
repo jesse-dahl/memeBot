@@ -1,5 +1,5 @@
 var config = require('./config');
-var imageUwu = require('./imageBrain');
+var imageUwu = require('./twitterBrain');
 var Twit = require("twit");
 
 var T = new Twit(config);
