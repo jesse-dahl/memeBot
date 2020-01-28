@@ -1,10 +1,10 @@
-var config = require('./config');
-var imageUwu = require('./twitterBrain');
-var Twit = require("twit");
+let config = require('./config');
+let imageUwu = require('./twitterBrain');
+let Twit = require("twit");
 
-var T = new Twit(config);
+let T = new Twit(config);
 
-var tweet = {
+let tweet = {
   status: "First tweet made by UwUMemeKun-Bot"
 }
 
