@@ -1,29 +1,37 @@
-let config = require('./config');
-let Twit = require("twit");
-let fs = require('fs');
+const config = require('./config');
+const Twit = require("twit");
+const fs = require('fs');
+const Post = require('../../models/db');
+const T = new Twit(config);
 
-let T = new Twit(config);
-let uwuPic = fs.readFileSync('./images/maganime.png', { encoding: 'base64' })
 
-T.post('media/upload', { media_data: uwuPic }, function (err, data, response) {
+const uwuTweet = function (dirname, filePath) {
+  const uwuPic = fs.readFileSync(dirname + "/public/" + filePath, { encoding: 'base64' })
 
-  let mediaIdStr = data.media_id_string;
-  let altText = ":3";
-  let meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
+  const newTwit = T.post('media/upload', { media_data: uwuPic }, function (err, data, response) {
 
-  T.post('media/metadata/create', meta_params, function (err, data, response) {
-    if (err) {
-      console.log("oops you made a fucky wucky: " + err);
-    } else {
-      var params = { status: 'UwU', media_ids: [mediaIdStr] };
+    const mediaIdStr = data.media_id_string;
+    const altText = ":3";
+    const meta_params = { media_id: mediaIdStr, alt_text: { text: altText } };
 
-      T.post('statuses/update', params, function (err, data, response) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log(data);
-        }
-      });
-    }
+    T.post('media/metadata/create', meta_params, function (err, data, response) {
+      if (err) {
+        console.log("oops you made a fucky wucky: " + err);
+      } else {
+        var params = { status: 'UwU', media_ids: [mediaIdStr] };
+
+        T.post('statuses/update', params, function (err, data, response) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(data);
+          }
+        });
+      }
+    });
   });
-});
+}
+
+
+
+module.exports = uwuTweet;
