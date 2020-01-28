@@ -4,9 +4,8 @@ const parser = require("body-parser");
 const multer = require("multer");
 const path = require('path');
 const Post = require('./models/db');
-const Storage = require('./functions/multerStorage');
+const Storage = require('./functions/multer/multerStorage');
 
-const imgArr = [];
 
 // Express stuff
 const app = express();
@@ -20,7 +19,6 @@ app.get("/", function (req, res) {
       console.log(err);
     }
     res.render("home", {
-      msg: "Herro :3",
       files: posts
     });
   });
@@ -42,18 +40,25 @@ app.post("/upload", function (req, res) {
         res.render('post', {
           msg: "Error: No file was selected!"
         });
-      } else {
-        const filePath = "uploads/" + req.file.filename;
-        const post = new Post({
-          image: filePath
-        });
-        post.save(function (err) {
-          if (!err) {
-            res.redirect("/");
-          } else {
-            console.log("There was an error with writing to the database: " + err);
-          }
-        });
+      }
+      else {
+        if (req.body.button === 'web') {
+          const filePath = "uploads/" + req.file.filename;
+          const post = new Post({
+            image: filePath
+          });
+          post.save(function (err) {
+            if (!err) {
+              res.redirect("/");
+            } else {
+              console.log("There was an error with writing to the database: " + err);
+            }
+          });
+        } else if (req.body.button === 'twitter') {
+          console.log("Hi Twitter")
+        } else if (req.body.button === 'reddit') {
+          console.log("Hi Reddit")
+        }
       }
     }
   });

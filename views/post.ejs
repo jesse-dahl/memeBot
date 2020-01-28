@@ -8,12 +8,13 @@
       <label for="exampleFormControlFile1">Example file input</label>
       <input type="file" class="form-control-file" id="exampleFormControlFile1" name="imageUpload">
 
-      <button class="btn btn-primary" type="submit" name="button">publish</button>
+      <button class="btn btn-primary" type="submit" name="button" value="web">publish to website</button>
+      <button class="btn btn-primary" type="submit" name="button" value="twitter">publish to Twitter</button>
+      <button class="btn btn-primary" type="submit" name="button" value="reddit">publish to Reddit</button>
     </div>
   </form>
 
   <br>
 
-  <!-- <img src="<%= typeof file != 'undefined' ? file : '' %>" class="img-thumbnail"> -->
 </div>
 <%- include("partials/footer") -%>
