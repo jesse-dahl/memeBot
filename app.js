@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require('path');
 const Post = require('./models/db');
 const Storage = require('./functions/multer/multerStorage');
+const Twitter = require('./functions/twitter/twitterBrain');
 
 
 // Express stuff
@@ -42,11 +43,11 @@ app.post("/upload", function (req, res) {
         });
       }
       else {
+        const filePath = "uploads/" + req.file.filename;
+        const post = new Post({
+          image: filePath
+        });
         if (req.body.button === 'web') {
-          const filePath = "uploads/" + req.file.filename;
-          const post = new Post({
-            image: filePath
-          });
           post.save(function (err) {
             if (!err) {
               res.redirect("/");
@@ -55,7 +56,14 @@ app.post("/upload", function (req, res) {
             }
           });
         } else if (req.body.button === 'twitter') {
-          console.log("Hi Twitter")
+          post.save(function (err) {
+            if (!err) {
+              Twitter(__dirname, filePath);
+              res.redirect('/');
+            } else {
+              console.log("There was an error with writing to the database: " + err);
+            }
+          })
         } else if (req.body.button === 'reddit') {
           console.log("Hi Reddit")
         }
